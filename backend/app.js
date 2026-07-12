@@ -6,6 +6,11 @@ const departmentRoutes = require("./routes/departmentRoutes");
 const employeeRoutes = require("./routes/employeeRoutes");
 const assetCategoryRoutes = require("./routes/assetCategoryRoutes");
 const assetRoutes = require("./routes/assetRoutes");
+const allocationRoutes = require("./routes/allocationRoutes");
+const bookingRoutes = require("./routes/bookingRoutes");
+const maintenanceRoutes = require("./routes/maintenanceRoutes");
+const auditRoutes = require("./routes/auditRoutes");
+const notificationRoutes = require("./routes/notificationRoutes");
 const app = express();
 
 app.use(cors());
@@ -15,6 +20,11 @@ app.use("/api/departments", departmentRoutes);
 app.use("/api/employees", employeeRoutes);
 app.use("/api/asset-categories", assetCategoryRoutes);
 app.use("/api/assets", assetRoutes);
+app.use("/api/allocations", allocationRoutes);
+app.use("/api/bookings", bookingRoutes);
+app.use("/api/maintenance", maintenanceRoutes);
+app.use("/api/audits", auditRoutes);
+app.use("/api/notifications", notificationRoutes);
 
 app.get("/", (req, res) => {
     res.send("AssetFlow Backend Running");
