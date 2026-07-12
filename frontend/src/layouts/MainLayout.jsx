@@ -6,8 +6,10 @@ function MainLayout() {
     return (
         <div>
             <Sidebar />
-            <Navbar />
-            <Outlet />
+            <div style={{ marginLeft: '260px', paddingTop: '70px' }}>
+                <Navbar />
+                <Outlet />
+            </div>
         </div>
     );
 }
