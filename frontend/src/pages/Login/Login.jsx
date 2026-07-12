@@ -11,26 +11,35 @@ import {
   FiMoon
 } from 'react-icons/fi';
 import Button from '../../components/ui/Button';
+import { useAuth } from '../../context/AuthContext';
 
 function Login() {
   const navigate = useNavigate();
+  const { login, signup, user } = useAuth();
+  const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
+    name: '',
     email: '',
-    password: ''
+    password: '',
+    confirmPassword: ''
   });
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    if (document.body.classList.contains('dark-mode')) {
-      setIsDarkMode(true);
-    } else {
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme === 'dark') {
-        setIsDarkMode(true);
-        document.body.classList.add('dark-mode');
-      }
+    if (user) {
+      navigate('/dashboard');
+    }
+  }, [user, navigate]);
+
+  useEffect(() => {
+    const isDark = document.body.classList.contains('dark-mode');
+    const savedTheme = localStorage.getItem('theme');
+    
+    if (isDark || savedTheme === 'dark') {
+      document.body.classList.add('dark-mode');
     }
   }, []);
 
@@ -46,14 +55,30 @@ function Login() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    // Simulate API call for now
-    setTimeout(() => {
+    setError('');
+
+    if (!isLogin && formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match");
       setLoading(false);
+      return;
+    }
+
+    let result;
+    if (isLogin) {
+      result = await login(formData.email, formData.password);
+    } else {
+      result = await signup(formData.name, formData.email, formData.password);
+    }
+
+    if (result.success) {
       navigate('/dashboard');
-    }, 1500);
+    } else {
+      setError(result.message || 'Authentication failed');
+      setLoading(false);
+    }
   };
 
   const handleChange = (e) => {
@@ -64,12 +89,10 @@ function Login() {
   };
 
   const handleGoogleLogin = () => {
-    // Future Google Authentication Placeholder
     console.log("Initialize Google OAuth");
   };
 
   const handleMicrosoftLogin = () => {
-    // Future Microsoft Authentication Placeholder
     console.log("Initialize Microsoft OAuth");
   };
 
@@ -91,7 +114,6 @@ function Login() {
           background-color: transparent;
         }
 
-        /* Left Panel - Branding */
         .login-left-panel {
           flex: 1;
           display: flex;
@@ -178,7 +200,6 @@ function Login() {
           background: rgba(30, 41, 59, 0.9);
         }
 
-        /* Right Panel - Glass Card */
         .login-right-panel {
           flex: 1;
           display: flex;
@@ -296,7 +317,6 @@ function Login() {
           box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.25) !important;
         }
 
-        /* Remember me & Forgot Password */
         .form-options {
           display: flex;
           justify-content: space-between;
@@ -331,7 +351,6 @@ function Login() {
         body.dark-mode .forgot-password { color: #3b82f6; }
         .forgot-password:hover { text-decoration: underline; color: #1d4ed8; }
 
-        /* Primary Button Additions */
         .loading-spinner {
           animation: spin 1s linear infinite;
           margin-right: 8px;
@@ -344,7 +363,6 @@ function Login() {
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* Divider */
         .auth-divider {
           display: flex;
           align-items: center;
@@ -366,7 +384,6 @@ function Login() {
         }
         .auth-divider span { padding: 0 16px; }
 
-        /* Social Logins */
         .social-btn {
           width: 100%;
           display: flex;
@@ -399,7 +416,6 @@ function Login() {
           box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
         
-        /* Footer */
         .login-footer {
           margin-top: 40px;
           text-align: center;
@@ -411,7 +427,17 @@ function Login() {
         .login-footer a:hover { text-decoration: underline; color: #1d4ed8; }
         body.dark-mode .login-footer a { color: #3b82f6; }
 
-        /* Responsive */
+        .error-message {
+          color: #ef4444;
+          font-size: 14px;
+          text-align: center;
+          margin-bottom: 16px;
+          padding: 10px;
+          background: rgba(239, 68, 68, 0.1);
+          border-radius: 8px;
+          border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
         .login-logo-mobile { display: none; }
 
         @media (max-width: 992px) {
@@ -454,11 +480,32 @@ function Login() {
         <div className="glass-login-card">
           <div className="login-header">
             <div className="login-logo-mobile"><FiBox /> AssetFlow</div>
-            <h2>Welcome Back</h2>
-            <p>Sign in to continue</p>
+            <h2>{isLogin ? 'Welcome Back' : 'Create Account'}</h2>
+            <p>{isLogin ? 'Sign in to continue' : 'Sign up for a new employee account'}</p>
           </div>
 
+          {error && <div className="error-message">{error}</div>}
+
           <form onSubmit={handleSubmit}>
+            {!isLogin && (
+              <div className="form-group">
+                <label className="form-label" htmlFor="name">Full Name</label>
+                <div className="input-wrapper">
+                  <FiUser className="input-icon" />
+                  <input 
+                    id="name"
+                    type="text" 
+                    name="name"
+                    className="form-input" 
+                    placeholder="John Doe"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+              </div>
+            )}
+
             <div className="form-group">
               <label className="form-label" htmlFor="email">Email Address</label>
               <div className="input-wrapper">
@@ -468,7 +515,7 @@ function Login() {
                   type="email" 
                   name="email"
                   className="form-input" 
-                  placeholder="admin@assetflow.com"
+                  placeholder="name@company.com"
                   value={formData.email}
                   onChange={handleChange}
                   required
@@ -490,7 +537,7 @@ function Login() {
                   value={formData.password}
                   onChange={handleChange}
                   required
-                  autoComplete="current-password"
+                  autoComplete={isLogin ? "current-password" : "new-password"}
                 />
                 <button 
                   type="button" 
@@ -503,19 +550,40 @@ function Login() {
               </div>
             </div>
 
-            <div className="form-options">
-              <label className="remember-me">
-                <input type="checkbox" name="remember" />
-                Remember me
-              </label>
-              <a href="#" className="forgot-password">Forgot password?</a>
-            </div>
+            {!isLogin && (
+              <div className="form-group">
+                <label className="form-label" htmlFor="confirmPassword">Confirm Password</label>
+                <div className="input-wrapper">
+                  <FiLock className="input-icon" />
+                  <input 
+                    id="confirmPassword"
+                    type={showPassword ? "text" : "password"} 
+                    name="confirmPassword"
+                    className="form-input" 
+                    placeholder="••••••••"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+              </div>
+            )}
 
-            <Button type="submit" variant="primary" style={{ width: '100%', justifyContent: 'center', padding: '14px' }} disabled={loading}>
+            {isLogin && (
+              <div className="form-options">
+                <label className="remember-me">
+                  <input type="checkbox" name="remember" />
+                  Remember me
+                </label>
+                <a href="#" className="forgot-password">Forgot password?</a>
+              </div>
+            )}
+
+            <Button type="submit" variant="primary" style={{ width: '100%', justifyContent: 'center', padding: '14px', marginTop: isLogin ? '0' : '24px' }} disabled={loading}>
               {loading ? (
-                <><span className="loading-spinner"></span> Authenticating...</>
+                <><span className="loading-spinner"></span> {isLogin ? 'Authenticating...' : 'Creating Account...'}</>
               ) : (
-                <>Sign In <FiArrowRight style={{ marginLeft: '8px' }} /></>
+                <>{isLogin ? 'Sign In' : 'Sign Up'} <FiArrowRight style={{ marginLeft: '8px' }} /></>
               )}
             </Button>
           </form>
@@ -544,7 +612,12 @@ function Login() {
           </div>
 
           <div className="login-footer">
-            Need help? <a href="#">Contact your administrator.</a><br/>
+            {isLogin ? (
+              <>Don't have an account? <a href="#" onClick={(e) => { e.preventDefault(); setIsLogin(false); }}>Sign up here.</a></>
+            ) : (
+              <>Already have an account? <a href="#" onClick={(e) => { e.preventDefault(); setIsLogin(true); }}>Sign in here.</a></>
+            )}
+            <br/><br/>
             © 2026 Team Bread & Jam <br/> AssetFlow v1.0
           </div>
         </div>

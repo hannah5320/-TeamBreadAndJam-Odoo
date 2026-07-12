@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiSearch, FiBell, FiUser, FiMoon, FiSun } from 'react-icons/fi';
+import { FiSearch, FiBell, FiUser, FiMoon, FiSun, FiLogOut } from 'react-icons/fi';
+import { useAuth } from '../../context/AuthContext';
 
 function Navbar() {
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
@@ -19,6 +21,11 @@ function Navbar() {
       document.body.classList.add('dark-mode');
       setIsDarkMode(true);
     }
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
   };
 
   return (
@@ -158,6 +165,12 @@ function Navbar() {
           font-size: 16px;
           font-weight: 600;
         }
+        
+        .user-name {
+          font-size: 14px;
+          font-weight: 600;
+          color: #334155;
+        }
 
         @media (max-width: 768px) {
           .navbar {
@@ -166,6 +179,9 @@ function Navbar() {
           }
           .navbar-search-container {
             width: 180px;
+          }
+          .user-name {
+            display: none;
           }
         }
       `}</style>
@@ -202,7 +218,16 @@ function Navbar() {
           <div className="navbar-avatar">
             <FiUser />
           </div>
+          <span className="user-name">{user?.name || 'User'}</span>
         </div>
+        <button 
+          type="button" 
+          className="navbar-btn" 
+          aria-label="Logout"
+          onClick={handleLogout}
+        >
+          <FiLogOut />
+        </button>
       </div>
     </header>
   );
