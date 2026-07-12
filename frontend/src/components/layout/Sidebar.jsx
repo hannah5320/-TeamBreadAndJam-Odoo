@@ -16,6 +16,7 @@ function Sidebar() {
   const menuItems = [
     { name: 'Dashboard', path: '/dashboard', icon: <FiGrid className="sidebar-icon" /> },
     { name: 'Assets', path: '/assets', icon: <FiBox className="sidebar-icon" /> },
+    { name: 'Categories', path: '/categories', icon: <FiLayers className="sidebar-icon" /> },
     { name: 'Employees', path: '/employees', icon: <FiUsers className="sidebar-icon" /> },
     { name: 'Departments', path: '/departments', icon: <FiLayers className="sidebar-icon" /> },
     { name: 'Allocations', path: '/allocations', icon: <FiShare2 className="sidebar-icon" /> },

@@ -4,46 +4,36 @@ import { useNavigate } from 'react-router-dom';
 import { FiPlus, FiAlertCircle, FiSearch } from 'react-icons/fi';
 import Table from '../../components/ui/Table';
 import Button from '../../components/ui/Button';
-import StatusBadge from '../../components/ui/StatusBadge';
 
-function Assets() {
+function AssetCategories() {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState('');
-  const [statusFilter, setStatusFilter] = useState('');
 
   useEffect(() => {
-    const fetchAssets = async () => {
+    const fetchCategories = async () => {
       setLoading(true);
       setError(null);
       try {
         // Axios API integration placeholder
-        // const response = await axios.get('/api/assets');
+        // const response = await axios.get('/api/categories');
         // setData(response.data);
       } catch (err) {
-        setError('Failed to fetch assets. Please try again later.');
+        setError('Failed to fetch asset categories. Please try again.');
         console.error(err);
       } finally {
         setLoading(false);
       }
     };
-    fetchAssets();
+    fetchCategories();
   }, []);
 
   const columns = [
-    { header: 'Asset Tag', accessor: 'tag' },
-    { header: 'Asset Name', accessor: 'name' },
-    { header: 'Category', accessor: 'category' },
-    { header: 'Assigned To', accessor: 'assignedTo' },
-    { header: 'Location', accessor: 'location' },
-    { 
-      header: 'Status', 
-      accessor: 'status', 
-      render: (row) => <StatusBadge status={row.status} /> 
-    }
+    { header: 'Category Name', accessor: 'category_name', render: (row) => <strong>{row.category_name}</strong> },
+    { header: 'Description', accessor: 'description' },
+    { header: 'Default Warranty (Months)', accessor: 'default_warranty_months' },
   ];
 
   return (
@@ -76,7 +66,6 @@ function Assets() {
           display: flex;
           gap: 16px;
           margin-bottom: 24px;
-          flex-wrap: wrap;
           align-items: center;
         }
 
@@ -103,22 +92,6 @@ function Assets() {
           background-color: #ffffff;
         }
 
-        .filter-select {
-          padding: 10px 14px;
-          font-size: 14px;
-          border: 1px solid #cbd5e1;
-          border-radius: 8px;
-          background-color: #ffffff;
-          color: #0f172a;
-          outline: none;
-          cursor: pointer;
-        }
-        
-        .filter-select option {
-          color: #0f172a;
-          background: #ffffff;
-        }
-
         .error-banner {
           display: flex;
           align-items: center;
@@ -135,10 +108,10 @@ function Assets() {
 
       <div className="module-header">
         <div className="module-title">
-          <h1>Assets</h1>
+          <h1>Asset Categories</h1>
         </div>
-        <Button variant="primary" onClick={() => navigate('/assets/create')}>
-          <FiPlus style={{ marginRight: '8px', strokeWidth: 3 }} /> Add Asset
+        <Button variant="primary" onClick={() => navigate('/categories/create')}>
+          <FiPlus style={{ marginRight: '8px', strokeWidth: 3 }} /> Add Category
         </Button>
       </div>
 
@@ -147,36 +120,12 @@ function Assets() {
           <FiSearch className="search-icon" />
           <input 
             type="text" 
-            placeholder="Search assets..." 
+            placeholder="Search categories..." 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="search-input"
           />
         </div>
-
-        <select 
-          value={categoryFilter}
-          onChange={(e) => setCategoryFilter(e.target.value)}
-          className="filter-select"
-        >
-          <option value="">All Categories</option>
-          <option value="Laptop">Laptop</option>
-          <option value="Desktop">Desktop</option>
-          <option value="Mobile">Mobile</option>
-          <option value="Furniture">Furniture</option>
-          <option value="Equipment">Equipment</option>
-        </select>
-
-        <select 
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
-          className="filter-select"
-        >
-          <option value="">All Statuses</option>
-          <option value="Available">Available</option>
-          <option value="Allocated">Allocated</option>
-          <option value="Under Maintenance">Under Maintenance</option>
-        </select>
       </div>
 
       {error && (
@@ -190,17 +139,11 @@ function Assets() {
         columns={columns}
         data={data}
         loading={loading}
-        emptyMessage="No assets available yet"
+        emptyMessage="No asset categories configured yet"
         actions={(row) => (
           <>
-            <Button variant="secondary" onClick={() => navigate(`/assets/${row.id}`)}>
-              View
-            </Button>
-            <Button variant="secondary" onClick={() => navigate(`/assets/edit/${row.id}`)}>
+            <Button variant="secondary" onClick={() => navigate(`/categories/edit/${row.category_id}`)}>
               Edit
-            </Button>
-            <Button variant="danger" onClick={() => {}}>
-              Delete
             </Button>
           </>
         )}
@@ -209,4 +152,4 @@ function Assets() {
   );
 }
 
-export default Assets;
+export default AssetCategories;

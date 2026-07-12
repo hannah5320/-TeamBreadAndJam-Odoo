@@ -24,6 +24,8 @@ import Reports from '../pages/Reports/Reports';
 import Notifications from '../pages/Notifications/Notifications';
 import Profile from '../pages/Profile/Profile';
 import Settings from '../pages/Settings/Settings';
+import AssetCategories from '../pages/AssetCategories/AssetCategories';
+import AddCategory from '../pages/AssetCategories/AddCategory';
 
 function AppRoutes() {
     return (
@@ -31,13 +33,16 @@ function AppRoutes() {
             <Routes>
                 <Route path="/login" element={<Login />} />
                 <Route path="/" element={<MainLayout />}>
-                    <Route index element={<Navigate to="/dashboard" replace />} />
+                    <Route index element={<Navigate to="/login" replace />} />
                     <Route path="dashboard" element={<Dashboard />} />
                     
                     <Route path="assets" element={<Assets />} />
                     <Route path="assets/:id" element={<AssetDetails />} />
                     <Route path="assets/add" element={<AddAsset />} />
                     <Route path="assets/create" element={<AddAsset />} />
+
+                    <Route path="categories" element={<AssetCategories />} />
+                    <Route path="categories/create" element={<AddCategory />} />
 
                     <Route path="employees" element={<Employees />} />
                     <Route path="employees/create" element={<AddEmployee />} />

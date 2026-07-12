@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiArrowLeft, FiUser, FiAlertCircle } from 'react-icons/fi';
+import { FiArrowLeft, FiUser, FiAlertCircle, FiLogOut } from 'react-icons/fi';
 import Button from '../../components/ui/Button';
 
 function Profile() {
@@ -186,9 +186,15 @@ function Profile() {
               </div>
             </div>
 
-            <Button variant="primary" onClick={() => navigate('/settings')}>
-              Edit Profile Settings
-            </Button>
+            <div style={{ display: 'flex', gap: '12px' }}>
+              <Button variant="primary" onClick={() => navigate('/settings')}>
+                Edit Profile Settings
+              </Button>
+              <Button variant="danger" onClick={() => navigate('/login')}>
+                <FiLogOut style={{ marginRight: '8px' }} />
+                Logout
+              </Button>
+            </div>
           </div>
         ) : (
           <div>
@@ -217,9 +223,15 @@ function Profile() {
               </div>
             </div>
 
-            <Button variant="primary" onClick={() => navigate('/settings')}>
-              Edit Profile Settings
-            </Button>
+            <div style={{ display: 'flex', gap: '12px' }}>
+              <Button variant="primary" onClick={() => navigate('/settings')}>
+                Edit Profile Settings
+              </Button>
+              <Button variant="danger" onClick={() => navigate('/login')}>
+                <FiLogOut style={{ marginRight: '8px' }} />
+                Logout
+              </Button>
+            </div>
           </div>
         )}
       </div>

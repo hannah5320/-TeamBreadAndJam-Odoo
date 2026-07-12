@@ -37,10 +37,20 @@ function Settings() {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+    const newVal = type === 'checkbox' ? checked : value;
     setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: newVal
     }));
+
+    // Handle dark mode toggle instantly
+    if (name === 'darkMode') {
+      if (newVal) {
+        document.body.classList.add('dark-mode');
+      } else {
+        document.body.classList.remove('dark-mode');
+      }
+    }
   };
 
   const handleSubmit = async (e) => {
