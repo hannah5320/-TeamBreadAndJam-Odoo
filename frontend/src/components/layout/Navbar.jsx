@@ -50,6 +50,19 @@ function Navbar() {
           gap: 8px;
         }
 
+        .navbar-brand img {
+          height: 64px;
+          width: auto;
+          transition: filter 0.3s ease;
+          /* Add dark drop shadow in light mode to guarantee visibility of light logos */
+          filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.3));
+        }
+
+        body.dark-mode .navbar-brand img {
+          /* Add light drop shadow in dark mode to guarantee visibility of dark logos */
+          filter: drop-shadow(0 2px 8px rgba(255, 255, 255, 0.4));
+        }
+
         .navbar-search-container {
           display: flex;
           align-items: center;
@@ -157,7 +170,7 @@ function Navbar() {
         }
       `}</style>
       <div className="navbar-brand">
-        <span>AssetFlow</span>
+        <img src="/assetflow-logo.png" alt="AssetFlow Logo" />
       </div>
       <div className="navbar-search-container">
         <FiSearch className="navbar-search-icon" />
