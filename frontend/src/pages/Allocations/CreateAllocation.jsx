@@ -3,12 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { FiArrowLeft, FiAlertCircle } from 'react-icons/fi';
 import Button from '../../components/ui/Button';
 
-function MaintenanceRequest() {
+function CreateAllocation() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     assetId: '',
-    description: '',
-    priority: 'Medium'
+    employeeId: '',
+    department: '',
+    allocatedDate: '',
+    returnDate: ''
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -24,13 +26,13 @@ function MaintenanceRequest() {
     setError(null);
     try {
       // Axios API integration placeholder
-      // const response = await axios.post('/api/maintenance', formData);
+      // const response = await axios.post('/api/allocations', formData);
       // if (response.status === 201) {
-      //   navigate('/maintenance');
+      //   navigate('/allocations');
       // }
-      navigate('/maintenance');
+      navigate('/allocations');
     } catch (err) {
-      setError('Failed to create maintenance request. Please try again.');
+      setError('Failed to allocate asset. Please try again.');
       console.error(err);
     } finally {
       setLoading(false);
@@ -140,11 +142,11 @@ function MaintenanceRequest() {
       `}</style>
 
       <div className="form-header">
-        <button type="button" className="back-btn" onClick={() => navigate('/maintenance')}>
+        <button type="button" className="back-btn" onClick={() => navigate('/allocations')}>
           <FiArrowLeft />
         </button>
         <div className="form-title">
-          <h1>Raise Maintenance Request</h1>
+          <h1>Allocate Asset</h1>
         </div>
       </div>
 
@@ -158,7 +160,7 @@ function MaintenanceRequest() {
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label className="form-label">Asset (Under Maintenance)</label>
+            <label className="form-label">Asset (Select Asset)</label>
             <select 
               name="assetId" 
               value={formData.assetId} 
@@ -167,45 +169,66 @@ function MaintenanceRequest() {
               className="form-input"
             >
               <option value="">Choose Asset...</option>
-              {/* Loaded dynamically */}
+              {/* Future Options dynamically loaded */}
             </select>
           </div>
 
           <div className="form-group">
-            <label className="form-label">Priority Level</label>
+            <label className="form-label">Assign To (Select Employee)</label>
             <select 
-              name="priority" 
-              value={formData.priority} 
+              name="employeeId" 
+              value={formData.employeeId} 
               onChange={handleChange} 
+              required
               className="form-input"
             >
-              <option value="Low">Low</option>
-              <option value="Medium">Medium</option>
-              <option value="High">High</option>
-              <option value="Critical">Critical</option>
+              <option value="">Choose Employee...</option>
+              {/* Future Options dynamically loaded */}
             </select>
           </div>
 
           <div className="form-group">
-            <label className="form-label">Issue Details / Description</label>
-            <textarea 
-              name="description" 
-              value={formData.description} 
+            <label className="form-label">Department</label>
+            <input 
+              type="text" 
+              name="department" 
+              value={formData.department} 
               onChange={handleChange} 
-              required 
-              rows="4"
-              placeholder="e.g. Screen flickering when plugged in"
+              placeholder="e.g. Finance"
+              required
               className="form-input"
-              style={{ fontFamily: 'inherit', resize: 'vertical' }}
+            />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Allocated Date</label>
+            <input 
+              type="date" 
+              name="allocatedDate" 
+              value={formData.allocatedDate} 
+              onChange={handleChange} 
+              required
+              className="form-input"
+            />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Return Date (Optional)</label>
+            <input 
+              type="date" 
+              name="returnDate" 
+              value={formData.returnDate} 
+              onChange={handleChange} 
+              className="form-input"
             />
           </div>
 
           <div className="form-actions">
-            <Button variant="secondary" onClick={() => navigate('/maintenance')}>
+            <Button variant="secondary" onClick={() => navigate('/allocations')}>
               Cancel
             </Button>
             <Button variant="primary" type="submit" disabled={loading}>
-              {loading ? 'Submitting...' : 'Submit Request'}
+              {loading ? 'Allocating...' : 'Allocate Asset'}
             </Button>
           </div>
         </form>
@@ -214,4 +237,4 @@ function MaintenanceRequest() {
   );
 }
 
-export default MaintenanceRequest;
+export default CreateAllocation;

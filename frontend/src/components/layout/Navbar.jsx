@@ -1,6 +1,8 @@
+import { useNavigate } from 'react-router-dom';
 import { FiSearch, FiBell, FiUser } from 'react-icons/fi';
 
 function Navbar() {
+  const navigate = useNavigate();
   return (
     <header className="navbar">
       <style>{`
@@ -148,11 +150,16 @@ function Navbar() {
         />
       </div>
       <div className="navbar-actions">
-        <button type="button" className="navbar-btn" aria-label="Notifications">
+        <button 
+          type="button" 
+          className="navbar-btn" 
+          aria-label="Notifications"
+          onClick={() => navigate('/notifications')}
+        >
           <FiBell />
           <span className="navbar-badge"></span>
         </button>
-        <div className="navbar-profile">
+        <div className="navbar-profile" onClick={() => navigate('/profile')}>
           <div className="navbar-avatar">
             <FiUser />
           </div>

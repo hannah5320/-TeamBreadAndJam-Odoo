@@ -6,7 +6,7 @@ import Table from '../../components/ui/Table';
 import Button from '../../components/ui/Button';
 import StatusBadge from '../../components/ui/StatusBadge';
 
-function Maintenance() {
+function Allocations() {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -14,34 +14,34 @@ function Maintenance() {
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    const fetchMaintenance = async () => {
+    const fetchAllocations = async () => {
       setLoading(true);
       setError(null);
       try {
         // Axios API integration placeholder
-        // const response = await axios.get('/api/maintenance');
+        // const response = await axios.get('/api/allocations');
         // setData(response.data);
       } catch (err) {
-        setError('Failed to fetch maintenance requests. Please try again.');
+        setError('Failed to fetch allocations. Please try again.');
         console.error(err);
       } finally {
         setLoading(false);
       }
     };
-    fetchMaintenance();
+    fetchAllocations();
   }, []);
 
   const columns = [
     { header: 'Asset', accessor: 'assetName', render: (row) => <strong>{row.assetName}</strong> },
-    { header: 'Raised By', accessor: 'raisedBy' },
-    { header: 'Priority', accessor: 'priority' },
-    { header: 'Technician', accessor: 'technician' },
+    { header: 'Employee', accessor: 'employeeName' },
+    { header: 'Department', accessor: 'department' },
+    { header: 'Allocated Date', accessor: 'allocatedDate' },
+    { header: 'Return Date', accessor: 'returnDate' },
     { 
       header: 'Status', 
       accessor: 'status', 
       render: (row) => <StatusBadge status={row.status} /> 
-    },
-    { header: 'Created Date', accessor: 'createdDate' }
+    }
   ];
 
   return (
@@ -116,10 +116,10 @@ function Maintenance() {
 
       <div className="module-header">
         <div className="module-title">
-          <h1>Maintenance Requests</h1>
+          <h1>Asset Allocations</h1>
         </div>
-        <Button variant="primary" onClick={() => navigate('/maintenance/request')}>
-          <FiPlus style={{ marginRight: '8px', strokeWidth: 3 }} /> Create Request
+        <Button variant="primary" onClick={() => navigate('/allocations/create')}>
+          <FiPlus style={{ marginRight: '8px', strokeWidth: 3 }} /> Allocate Asset
         </Button>
       </div>
 
@@ -128,7 +128,7 @@ function Maintenance() {
           <FiSearch className="search-icon" />
           <input 
             type="text" 
-            placeholder="Search requests..." 
+            placeholder="Search allocations..." 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="search-input"
@@ -147,17 +147,14 @@ function Maintenance() {
         columns={columns}
         data={data}
         loading={loading}
-        emptyMessage="No maintenance requests registered yet"
+        emptyMessage="No asset allocations registered yet"
         actions={(row) => (
           <>
-            <Button variant="secondary" onClick={() => {}}>
-              Approve
+            <Button variant="secondary" onClick={() => navigate(`/allocations/return/${row.id}`)}>
+              Return Asset
             </Button>
-            <Button variant="secondary" onClick={() => {}}>
-              Assign
-            </Button>
-            <Button variant="secondary" onClick={() => {}}>
-              Resolve
+            <Button variant="secondary" onClick={() => navigate(`/allocations/transfer/${row.id}`)}>
+              Transfer Asset
             </Button>
           </>
         )}
@@ -166,4 +163,4 @@ function Maintenance() {
   );
 }
 
-export default Maintenance;
+export default Allocations;

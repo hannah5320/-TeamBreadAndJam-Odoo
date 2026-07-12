@@ -3,12 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { FiArrowLeft, FiAlertCircle } from 'react-icons/fi';
 import Button from '../../components/ui/Button';
 
-function MaintenanceRequest() {
+function CreateAudit() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    assetId: '',
-    description: '',
-    priority: 'Medium'
+    title: '',
+    department: '',
+    startDate: '',
+    endDate: ''
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -24,13 +25,13 @@ function MaintenanceRequest() {
     setError(null);
     try {
       // Axios API integration placeholder
-      // const response = await axios.post('/api/maintenance', formData);
+      // const response = await axios.post('/api/audits', formData);
       // if (response.status === 201) {
-      //   navigate('/maintenance');
+      //   navigate('/audits');
       // }
-      navigate('/maintenance');
+      navigate('/audits');
     } catch (err) {
-      setError('Failed to create maintenance request. Please try again.');
+      setError('Failed to create audit cycle. Please try again.');
       console.error(err);
     } finally {
       setLoading(false);
@@ -140,11 +141,11 @@ function MaintenanceRequest() {
       `}</style>
 
       <div className="form-header">
-        <button type="button" className="back-btn" onClick={() => navigate('/maintenance')}>
+        <button type="button" className="back-btn" onClick={() => navigate('/audits')}>
           <FiArrowLeft />
         </button>
         <div className="form-title">
-          <h1>Raise Maintenance Request</h1>
+          <h1>Create Audit Cycle</h1>
         </div>
       </div>
 
@@ -158,54 +159,61 @@ function MaintenanceRequest() {
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label className="form-label">Asset (Under Maintenance)</label>
-            <select 
-              name="assetId" 
-              value={formData.assetId} 
+            <label className="form-label">Audit Title</label>
+            <input 
+              type="text" 
+              name="title" 
+              value={formData.title} 
+              onChange={handleChange} 
+              required 
+              placeholder="e.g. Q3 Hardware & Network Audit"
+              className="form-input"
+            />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Target Department</label>
+            <input 
+              type="text" 
+              name="department" 
+              value={formData.department} 
+              onChange={handleChange} 
+              required 
+              placeholder="e.g. Product Design"
+              className="form-input"
+            />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Start Date</label>
+            <input 
+              type="date" 
+              name="startDate" 
+              value={formData.startDate} 
               onChange={handleChange} 
               required
               className="form-input"
-            >
-              <option value="">Choose Asset...</option>
-              {/* Loaded dynamically */}
-            </select>
+            />
           </div>
 
           <div className="form-group">
-            <label className="form-label">Priority Level</label>
-            <select 
-              name="priority" 
-              value={formData.priority} 
+            <label className="form-label">End Date</label>
+            <input 
+              type="date" 
+              name="endDate" 
+              value={formData.endDate} 
               onChange={handleChange} 
+              required
               className="form-input"
-            >
-              <option value="Low">Low</option>
-              <option value="Medium">Medium</option>
-              <option value="High">High</option>
-              <option value="Critical">Critical</option>
-            </select>
-          </div>
-
-          <div className="form-group">
-            <label className="form-label">Issue Details / Description</label>
-            <textarea 
-              name="description" 
-              value={formData.description} 
-              onChange={handleChange} 
-              required 
-              rows="4"
-              placeholder="e.g. Screen flickering when plugged in"
-              className="form-input"
-              style={{ fontFamily: 'inherit', resize: 'vertical' }}
             />
           </div>
 
           <div className="form-actions">
-            <Button variant="secondary" onClick={() => navigate('/maintenance')}>
+            <Button variant="secondary" onClick={() => navigate('/audits')}>
               Cancel
             </Button>
             <Button variant="primary" type="submit" disabled={loading}>
-              {loading ? 'Submitting...' : 'Submit Request'}
+              {loading ? 'Creating...' : 'Create Audit'}
             </Button>
           </div>
         </form>
@@ -214,4 +222,4 @@ function MaintenanceRequest() {
   );
 }
 
-export default MaintenanceRequest;
+export default CreateAudit;

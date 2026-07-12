@@ -8,7 +8,8 @@ import {
   FiTool, 
   FiClipboard, 
   FiBarChart2, 
-  FiSettings 
+  FiSettings,
+  FiShare2
 } from 'react-icons/fi';
 
 function Sidebar() {
@@ -17,6 +18,7 @@ function Sidebar() {
     { name: 'Assets', path: '/assets', icon: <FiBox className="sidebar-icon" /> },
     { name: 'Employees', path: '/employees', icon: <FiUsers className="sidebar-icon" /> },
     { name: 'Departments', path: '/departments', icon: <FiLayers className="sidebar-icon" /> },
+    { name: 'Allocations', path: '/allocations', icon: <FiShare2 className="sidebar-icon" /> },
     { name: 'Bookings', path: '/bookings', icon: <FiCalendar className="sidebar-icon" /> },
     { name: 'Maintenance', path: '/maintenance', icon: <FiTool className="sidebar-icon" /> },
     { name: 'Audits', path: '/audits', icon: <FiClipboard className="sidebar-icon" /> },

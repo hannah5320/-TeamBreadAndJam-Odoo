@@ -3,12 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { FiArrowLeft, FiAlertCircle } from 'react-icons/fi';
 import Button from '../../components/ui/Button';
 
-function MaintenanceRequest() {
+function CreateBooking() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     assetId: '',
-    description: '',
-    priority: 'Medium'
+    employeeId: '',
+    purpose: '',
+    startDate: '',
+    endDate: ''
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -24,13 +26,13 @@ function MaintenanceRequest() {
     setError(null);
     try {
       // Axios API integration placeholder
-      // const response = await axios.post('/api/maintenance', formData);
+      // const response = await axios.post('/api/bookings', formData);
       // if (response.status === 201) {
-      //   navigate('/maintenance');
+      //   navigate('/bookings');
       // }
-      navigate('/maintenance');
+      navigate('/bookings');
     } catch (err) {
-      setError('Failed to create maintenance request. Please try again.');
+      setError('Failed to create booking. Please try again.');
       console.error(err);
     } finally {
       setLoading(false);
@@ -140,11 +142,11 @@ function MaintenanceRequest() {
       `}</style>
 
       <div className="form-header">
-        <button type="button" className="back-btn" onClick={() => navigate('/maintenance')}>
+        <button type="button" className="back-btn" onClick={() => navigate('/bookings')}>
           <FiArrowLeft />
         </button>
         <div className="form-title">
-          <h1>Raise Maintenance Request</h1>
+          <h1>Create Booking</h1>
         </div>
       </div>
 
@@ -158,7 +160,7 @@ function MaintenanceRequest() {
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label className="form-label">Asset (Under Maintenance)</label>
+            <label className="form-label">Asset (Select Resource)</label>
             <select 
               name="assetId" 
               value={formData.assetId} 
@@ -172,40 +174,62 @@ function MaintenanceRequest() {
           </div>
 
           <div className="form-group">
-            <label className="form-label">Priority Level</label>
+            <label className="form-label">Employee (Reserved By)</label>
             <select 
-              name="priority" 
-              value={formData.priority} 
+              name="employeeId" 
+              value={formData.employeeId} 
               onChange={handleChange} 
+              required
               className="form-input"
             >
-              <option value="Low">Low</option>
-              <option value="Medium">Medium</option>
-              <option value="High">High</option>
-              <option value="Critical">Critical</option>
+              <option value="">Choose Employee...</option>
+              {/* Loaded dynamically */}
             </select>
           </div>
 
           <div className="form-group">
-            <label className="form-label">Issue Details / Description</label>
-            <textarea 
-              name="description" 
-              value={formData.description} 
+            <label className="form-label">Purpose of Booking</label>
+            <input 
+              type="text" 
+              name="purpose" 
+              value={formData.purpose} 
               onChange={handleChange} 
               required 
-              rows="4"
-              placeholder="e.g. Screen flickering when plugged in"
+              placeholder="e.g. Project presentation offsite"
               className="form-input"
-              style={{ fontFamily: 'inherit', resize: 'vertical' }}
+            />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Start Date & Time</label>
+            <input 
+              type="datetime-local" 
+              name="startDate" 
+              value={formData.startDate} 
+              onChange={handleChange} 
+              required
+              className="form-input"
+            />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">End Date & Time</label>
+            <input 
+              type="datetime-local" 
+              name="endDate" 
+              value={formData.endDate} 
+              onChange={handleChange} 
+              required
+              className="form-input"
             />
           </div>
 
           <div className="form-actions">
-            <Button variant="secondary" onClick={() => navigate('/maintenance')}>
+            <Button variant="secondary" onClick={() => navigate('/bookings')}>
               Cancel
             </Button>
             <Button variant="primary" type="submit" disabled={loading}>
-              {loading ? 'Submitting...' : 'Submit Request'}
+              {loading ? 'Creating...' : 'Create Booking'}
             </Button>
           </div>
         </form>
@@ -214,4 +238,4 @@ function MaintenanceRequest() {
   );
 }
 
-export default MaintenanceRequest;
+export default CreateBooking;
