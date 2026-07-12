@@ -1,27 +1,24 @@
-const assetService = require("../services/assetService");
+const assetCategoryService = require("../services/assetCategoryService");
 
-const createAsset = async (req, res) => {
+const createCategory = async (req, res) => {
     try {
-        const newAsset = await assetService.createAsset(req.body);
+        const { category_name, description } = req.body;
+        const newCategory = await assetCategoryService.createCategory({
+            category_name,
+            description
+        });
         return res.status(201).json({
             success: true,
-            data: newAsset
+            data: newCategory
         });
     } catch (err) {
         if (err.code === "23505") {
-            const detail = err.detail || "";
-            let message = "Asset tag or serial number already exists";
-            if (detail.includes("asset_tag")) {
-                message = "Asset tag already exists";
-            } else if (detail.includes("serial_number")) {
-                message = "Serial number already exists";
-            }
             return res.status(400).json({
                 success: false,
-                message
+                message: "Category name already exists"
             });
         }
-        if (err.message.includes("required") || err.message.includes("exist") || err.message.includes("not found")) {
+        if (err.message.includes("required") || err.message.includes("not found")) {
             return res.status(400).json({
                 success: false,
                 message: err.message
@@ -34,12 +31,12 @@ const createAsset = async (req, res) => {
     }
 };
 
-const getAllAssets = async (req, res) => {
+const getAllCategories = async (req, res) => {
     try {
-        const assets = await assetService.getAllAssets();
+        const categories = await assetCategoryService.getAllCategories();
         return res.status(200).json({
             success: true,
-            data: assets
+            data: categories
         });
     } catch (err) {
         return res.status(500).json({
@@ -49,16 +46,16 @@ const getAllAssets = async (req, res) => {
     }
 };
 
-const getAssetById = async (req, res) => {
+const getCategoryById = async (req, res) => {
     try {
         const { id } = req.params;
-        const asset = await assetService.getAssetById(id);
+        const category = await assetCategoryService.getCategoryById(id);
         return res.status(200).json({
             success: true,
-            data: asset
+            data: category
         });
     } catch (err) {
-        if (err.message === "Asset not found") {
+        if (err.message === "Category not found") {
             return res.status(404).json({
                 success: false,
                 message: err.message
@@ -71,35 +68,32 @@ const getAssetById = async (req, res) => {
     }
 };
 
-const updateAsset = async (req, res) => {
+const updateCategory = async (req, res) => {
     try {
         const { id } = req.params;
-        const updatedAsset = await assetService.updateAsset(id, req.body);
+        const { category_name, description } = req.body;
+        const updatedCategory = await assetCategoryService.updateCategory(id, {
+            category_name,
+            description
+        });
         return res.status(200).json({
             success: true,
-            data: updatedAsset
+            data: updatedCategory
         });
     } catch (err) {
         if (err.code === "23505") {
-            const detail = err.detail || "";
-            let message = "Asset tag or serial number already exists";
-            if (detail.includes("asset_tag")) {
-                message = "Asset tag already exists";
-            } else if (detail.includes("serial_number")) {
-                message = "Serial number already exists";
-            }
             return res.status(400).json({
                 success: false,
-                message
+                message: "Category name already exists"
             });
         }
-        if (err.message === "Asset not found") {
+        if (err.message === "Category not found") {
             return res.status(404).json({
                 success: false,
                 message: err.message
             });
         }
-        if (err.message.includes("required") || err.message.includes("exist")) {
+        if (err.message.includes("required")) {
             return res.status(400).json({
                 success: false,
                 message: err.message
@@ -112,16 +106,16 @@ const updateAsset = async (req, res) => {
     }
 };
 
-const deleteAsset = async (req, res) => {
+const deleteCategory = async (req, res) => {
     try {
         const { id } = req.params;
-        const deletedAsset = await assetService.deleteAsset(id);
+        const deletedCategory = await assetCategoryService.deleteCategory(id);
         return res.status(200).json({
             success: true,
-            data: deletedAsset
+            data: deletedCategory
         });
     } catch (err) {
-        if (err.message === "Asset not found") {
+        if (err.message === "Category not found") {
             return res.status(404).json({
                 success: false,
                 message: err.message
@@ -130,7 +124,7 @@ const deleteAsset = async (req, res) => {
         if (err.code === "23503") {
             return res.status(400).json({
                 success: false,
-                message: "Cannot delete asset as it is referenced by other records"
+                message: "Cannot delete category as it is referenced by other records"
             });
         }
         return res.status(500).json({
@@ -141,9 +135,9 @@ const deleteAsset = async (req, res) => {
 };
 
 module.exports = {
-    createAsset,
-    getAllAssets,
-    getAssetById,
-    updateAsset,
-    deleteAsset
+    createCategory,
+    getAllCategories,
+    getCategoryById,
+    updateCategory,
+    deleteCategory
 };
