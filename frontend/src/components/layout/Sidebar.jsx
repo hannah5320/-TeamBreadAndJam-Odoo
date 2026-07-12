@@ -36,11 +36,11 @@ function Sidebar() {
           left: 0;
           bottom: 0;
           width: 260px;
-          background-color: #0f172a;
-          color: #94a3b8;
+          background-color: #ffffff;
+          color: #64748b;
           display: flex;
           flex-direction: column;
-          border-right: 1px solid #1e293b;
+          border-right: 1px solid #e2e8f0;
           font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
           z-index: 100;
           box-sizing: border-box;
@@ -51,8 +51,8 @@ function Sidebar() {
           display: flex;
           align-items: center;
           padding: 0 24px;
-          border-bottom: 1px solid #1e293b;
-          color: #ffffff;
+          border-bottom: 1px solid #e2e8f0;
+          color: #0f172a;
           font-size: 20px;
           font-weight: 700;
           letter-spacing: 0.5px;
@@ -74,7 +74,7 @@ function Sidebar() {
           align-items: center;
           gap: 12px;
           padding: 12px 16px;
-          color: #94a3b8;
+          color: #64748b;
           text-decoration: none;
           border-radius: 8px;
           font-size: 14px;
@@ -84,8 +84,8 @@ function Sidebar() {
         }
 
         .sidebar-link:hover {
-          background-color: #1e293b;
-          color: #ffffff;
+          background-color: #f1f5f9;
+          color: #0f172a;
         }
 
         .sidebar-link.active {

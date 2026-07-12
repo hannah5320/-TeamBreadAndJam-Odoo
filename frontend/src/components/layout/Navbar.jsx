@@ -1,8 +1,26 @@
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiSearch, FiBell, FiUser } from 'react-icons/fi';
+import { FiSearch, FiBell, FiUser, FiMoon, FiSun } from 'react-icons/fi';
 
 function Navbar() {
   const navigate = useNavigate();
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    // Check initial state
+    setIsDarkMode(document.body.classList.contains('dark-mode'));
+  }, []);
+
+  const toggleDarkMode = () => {
+    if (isDarkMode) {
+      document.body.classList.remove('dark-mode');
+      setIsDarkMode(false);
+    } else {
+      document.body.classList.add('dark-mode');
+      setIsDarkMode(true);
+    }
+  };
+
   return (
     <header className="navbar">
       <style>{`
@@ -150,6 +168,14 @@ function Navbar() {
         />
       </div>
       <div className="navbar-actions">
+        <button 
+          type="button" 
+          className="navbar-btn" 
+          aria-label="Toggle Dark Mode"
+          onClick={toggleDarkMode}
+        >
+          {isDarkMode ? <FiSun /> : <FiMoon />}
+        </button>
         <button 
           type="button" 
           className="navbar-btn" 

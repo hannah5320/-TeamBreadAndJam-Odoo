@@ -42,15 +42,6 @@ function Settings() {
       ...prev,
       [name]: newVal
     }));
-
-    // Handle dark mode toggle instantly
-    if (name === 'darkMode') {
-      if (newVal) {
-        document.body.classList.add('dark-mode');
-      } else {
-        document.body.classList.remove('dark-mode');
-      }
-    }
   };
 
   const handleSubmit = async (e) => {
@@ -332,18 +323,6 @@ function Settings() {
                   />
                   <label htmlFor="emailNotifications" className="form-label" style={{ margin: 0, cursor: 'pointer' }}>
                     Enable Email Alerts & Notifications
-                  </label>
-                </div>
-                <div className="checkbox-group">
-                  <input 
-                    type="checkbox" 
-                    id="darkMode"
-                    name="darkMode" 
-                    checked={formData.darkMode} 
-                    onChange={handleChange} 
-                  />
-                  <label htmlFor="darkMode" className="form-label" style={{ margin: 0, cursor: 'pointer' }}>
-                    Enable Dark Mode Interface
                   </label>
                 </div>
               </div>
