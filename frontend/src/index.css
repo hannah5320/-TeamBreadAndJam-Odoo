@@ -34,7 +34,9 @@
    TRUE DARK MODE OVERRIDES
    ========================================= */
 body.dark-mode {
-  background-color: #0f172a !important;
+  background: linear-gradient(-45deg, #0f172a, #1e1b4b, #172554, #1e293b) !important;
+  background-size: 400% 400% !important;
+  animation: gradientBG 15s ease infinite !important;
   color: #e2e8f0 !important;
 }
 
@@ -177,6 +179,21 @@ body.dark-mode .back-btn:hover {
 
 body {
   margin: 0;
+  background: linear-gradient(-45deg, #e0e7ff, #f3e8ff, #dbeafe, #ede9fe);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+}
+
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 #root {
@@ -189,6 +206,8 @@ body {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  position: relative;
+  z-index: 1;
 }
 
 h1,
@@ -233,4 +252,169 @@ code {
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
+}
+
+/* =========================================
+   AMBIENT BACKGROUND ENHANCEMENTS
+   ========================================= */
+
+body::before,
+body::after,
+#root::before,
+#root::after {
+  content: "";
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  pointer-events: none;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+}
+
+body::before,
+body::after {
+  z-index: 0;
+}
+
+#root::after {
+  z-index: -2;
+}
+
+#root::before {
+  z-index: -1;
+}
+
+/* L2 & L3: Aurora & Large Blobs (body::before) */
+body::before {
+  background: 
+    conic-gradient(from 180deg at 50% 50%, transparent 0%, rgba(99,102,241,0.08) 30%, transparent 60%),
+    linear-gradient(45deg, transparent 10%, rgba(59,130,246,0.12) 40%, transparent 70%),
+    linear-gradient(-45deg, transparent 30%, rgba(168,85,247,0.10) 60%, transparent 90%),
+    radial-gradient(circle at 10% 80%, rgba(99,102,241,0.12) 0%, transparent 40%),
+    radial-gradient(circle at 90% 20%, rgba(168,85,247,0.10) 0%, transparent 40%);
+  filter: blur(130px);
+  animation: auroraFlow 120s ease-in-out infinite alternate;
+}
+
+body.dark-mode::before {
+  background: 
+    conic-gradient(from 180deg at 50% 50%, transparent 0%, rgba(37,99,235,0.08) 30%, transparent 60%),
+    linear-gradient(45deg, transparent 10%, rgba(30,64,175,0.10) 40%, transparent 70%),
+    linear-gradient(-45deg, transparent 30%, rgba(99,102,241,0.08) 60%, transparent 90%),
+    radial-gradient(circle at 10% 80%, rgba(37,99,235,0.10) 0%, transparent 40%),
+    radial-gradient(circle at 90% 20%, rgba(99,102,241,0.08) 0%, transparent 40%);
+}
+
+/* L4 & L5: Medium & Small Blobs (body::after) */
+body::after {
+  background: 
+    radial-gradient(circle at 40% 10%, rgba(59,130,246,0.12) 0%, transparent 30%),
+    radial-gradient(circle at 70% 90%, rgba(168,85,247,0.10) 0%, transparent 30%),
+    radial-gradient(circle at 50% 50%, rgba(99,102,241,0.08) 0%, transparent 30%),
+    radial-gradient(circle at 15% 35%, rgba(255,255,255,0.05) 0%, transparent 15%),
+    radial-gradient(circle at 85% 65%, rgba(255,255,255,0.05) 0%, transparent 15%),
+    radial-gradient(circle at 35% 85%, rgba(99,102,241,0.10) 0%, transparent 15%),
+    radial-gradient(circle at 65% 15%, rgba(168,85,247,0.10) 0%, transparent 15%);
+  filter: blur(80px);
+  animation: floatMediumBlobs 81s ease-in-out infinite alternate-reverse;
+}
+
+body.dark-mode::after {
+  background: 
+    radial-gradient(circle at 40% 10%, rgba(30,64,175,0.10) 0%, transparent 30%),
+    radial-gradient(circle at 70% 90%, rgba(99,102,241,0.08) 0%, transparent 30%),
+    radial-gradient(circle at 50% 50%, rgba(37,99,235,0.06) 0%, transparent 30%),
+    radial-gradient(circle at 15% 35%, rgba(255,255,255,0.02) 0%, transparent 15%),
+    radial-gradient(circle at 85% 65%, rgba(255,255,255,0.02) 0%, transparent 15%),
+    radial-gradient(circle at 35% 85%, rgba(37,99,235,0.08) 0%, transparent 15%),
+    radial-gradient(circle at 65% 15%, rgba(99,102,241,0.08) 0%, transparent 15%);
+}
+
+/* L6: Fog (#root::after) */
+#root::after {
+  background: 
+    linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.04) 50%, transparent 100%),
+    linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.03) 50%, transparent 100%);
+  filter: blur(150px);
+  animation: fogDrift 94s ease-in-out infinite alternate;
+}
+
+body.dark-mode #root::after {
+  background: 
+    linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.02) 50%, transparent 100%),
+    linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.015) 50%, transparent 100%);
+}
+
+/* L7 & L8: Particles & Grain (#root::before) */
+#root::before {
+  background-image: 
+    repeating-radial-gradient(circle at 15% 15%, transparent 0, rgba(0,0,0,0.05) 1px, transparent 2px),
+    repeating-radial-gradient(circle at 85% 85%, transparent 0, rgba(255,255,255,0.05) 1px, transparent 2px),
+    radial-gradient(2px 2px at 10% 10%, rgba(255,255,255,0.8) 100%, transparent),
+    radial-gradient(3px 3px at 25% 45%, rgba(255,255,255,0.5) 100%, transparent),
+    radial-gradient(1.5px 1.5px at 40% 80%, rgba(255,255,255,0.9) 100%, transparent),
+    radial-gradient(2.5px 2.5px at 65% 20%, rgba(255,255,255,0.4) 100%, transparent),
+    radial-gradient(1px 1px at 80% 60%, rgba(255,255,255,0.7) 100%, transparent),
+    radial-gradient(3.5px 3.5px at 90% 90%, rgba(255,255,255,0.5) 100%, transparent),
+    radial-gradient(2px 2px at 50% 30%, rgba(255,255,255,0.8) 100%, transparent),
+    radial-gradient(1.5px 1.5px at 85% 15%, rgba(255,255,255,0.6) 100%, transparent);
+  background-size: 4px 4px, 4px 4px, 60vw 60vh, 50vw 50vh, 70vw 70vh, 55vw 55vh, 65vw 65vh, 75vw 75vh, 45vw 45vh, 80vw 80vh;
+  opacity: 0.6;
+  animation: particleFloat 110s ease-in-out infinite alternate;
+}
+
+body.dark-mode #root::before {
+  background-image: 
+    repeating-radial-gradient(circle at 15% 15%, transparent 0, rgba(0,0,0,0.08) 1px, transparent 2px),
+    repeating-radial-gradient(circle at 85% 85%, transparent 0, rgba(255,255,255,0.03) 1px, transparent 2px),
+    radial-gradient(2px 2px at 10% 10%, rgba(255,255,255,0.5) 100%, transparent),
+    radial-gradient(3px 3px at 25% 45%, rgba(255,255,255,0.3) 100%, transparent),
+    radial-gradient(1.5px 1.5px at 40% 80%, rgba(255,255,255,0.6) 100%, transparent),
+    radial-gradient(2.5px 2.5px at 65% 20%, rgba(255,255,255,0.2) 100%, transparent),
+    radial-gradient(1px 1px at 80% 60%, rgba(255,255,255,0.4) 100%, transparent),
+    radial-gradient(3.5px 3.5px at 90% 90%, rgba(255,255,255,0.3) 100%, transparent),
+    radial-gradient(2px 2px at 50% 30%, rgba(255,255,255,0.5) 100%, transparent),
+    radial-gradient(1.5px 1.5px at 85% 15%, rgba(255,255,255,0.4) 100%, transparent);
+  opacity: 0.4;
+}
+
+/* Keyframes */
+@keyframes auroraFlow {
+  0% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+  33% { transform: translate3d(5vw, -5vh, 0) rotate(5deg) scale(1.05); }
+  66% { transform: translate3d(-5vw, 10vh, 0) rotate(-5deg) scale(1.1); }
+  100% { transform: translate3d(10vw, 5vh, 0) rotate(2deg) scale(0.95); }
+}
+
+@keyframes floatMediumBlobs {
+  0% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+  33% { transform: translate3d(-10vw, 15vh, 0) rotate(-10deg) scale(1.1); }
+  66% { transform: translate3d(15vw, -10vh, 0) rotate(10deg) scale(0.9); }
+  100% { transform: translate3d(-5vw, -5vh, 0) rotate(-5deg) scale(1.05); }
+}
+
+@keyframes fogDrift {
+  0% { transform: translate3d(-5vw, 0, 0) scale(1); }
+  50% { transform: translate3d(5vw, 0, 0) scale(1.1); }
+  100% { transform: translate3d(-5vw, 0, 0) scale(1); }
+}
+
+@keyframes particleFloat {
+  0% { transform: translate3d(0, 0, 0); opacity: 0.3; }
+  25% { opacity: 0.7; }
+  50% { transform: translate3d(-10vw, -10vh, 0); opacity: 0.4; }
+  75% { opacity: 0.8; }
+  100% { transform: translate3d(-20vw, -20vh, 0); opacity: 0.3; }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  body::before,
+  body::after,
+  #root::before,
+  #root::after {
+    animation: none !important;
+  }
 }
