@@ -1,252 +1,265 @@
-# TeamBreadAndJam-Odoo
-# AssetFlow – Enterprise Asset & Resource Management System
+# AssetFlow
+
+AssetFlow is an Enterprise Asset & Resource Management System built for the Odoo Hackathon 2026. It provides a centralized platform for managing assets, employees, departments, allocations, bookings, maintenance requests, audits, notifications, and reporting through a modern web app.
 
 ## Overview
 
-AssetFlow is a centralized Enterprise Asset & Resource Management System developed for the Odoo Hackathon 2026.
+The project is divided into a React + Vite frontend and a Node.js + Express + PostgreSQL backend. The system is designed to help organizations track assets throughout their lifecycle, assign them to employees, manage maintenance and audits, and provide a clear operational dashboard.
 
-The application enables organizations to efficiently manage assets, employees, departments, bookings, maintenance requests, audits, and notifications through a modern web interface backed by PostgreSQL.
+## Project Goals
 
----
+- Centralize asset and resource management
+- Reduce manual tracking through spreadsheets
+- Improve allocation visibility and accountability
+- Support booking and maintenance workflows
+- Make audit preparation easier through structured records
 
-## Problem Statement
+## Core Modules
 
-Organizations often rely on spreadsheets and disconnected systems to manage organizational assets, resulting in:
+### Frontend Modules
+- Login and authentication flow
+- Dashboard overview
+- Department management
+- Employee management
+- Asset category management
+- Asset management
+- Asset allocation and returns
+- Booking creation and calendar view
+- Maintenance request handling
+- Audit cycle management
+- Notifications center
+- Profile and settings pages
 
-- Poor asset visibility
-- Manual allocation tracking
-- Booking conflicts
-- Delayed maintenance
-- Difficult audit management
-
-AssetFlow provides a centralized ERP-style solution to simplify the complete asset lifecycle.
-
----
-
-## Features
-
-### Authentication
-- Secure Login
-- JWT Authentication
-- Password Hashing using bcrypt
-
-### Dashboard
-- Asset Overview
-- Employee Summary
-- Department Summary
-- Quick Statistics
-
-### Department Management
-- Create Department
-- View Departments
-- Update Department
-- Delete Department
-
-### Employee Management
-- Create Employee
-- Assign Department
-- Assign Role
-- Manage Status
-
-### Asset Categories
-- CRUD Operations
-- Category Management
-
-### Asset Management
-- Asset Registration
-- Asset Tracking
-- Asset Status
-- Asset Information
-
-### Asset Allocation
-- Allocate Assets
-- Return Assets
-- Allocation History
-
-### Resource Booking
-- Resource Booking
-- Booking Management
-
-### Maintenance
-- Maintenance Requests
-- Maintenance Tracking
-
-### Audit
-- Audit Records
-- Audit Verification
-
-### Notifications
-- System Notifications
-- User Notifications
-
----
+### Backend Modules
+- Authentication
+- Departments CRUD
+- Employees CRUD
+- Asset categories CRUD
+- Assets CRUD
+- Asset allocations
+- Bookings
+- Maintenance requests
+- Audits
+- Notifications
+- Reporting endpoints
 
 ## Tech Stack
 
 ### Frontend
-
-- React
+- React 19
 - Vite
+- React Router DOM
 - Axios
+- React Icons
 
 ### Backend
-
 - Node.js
 - Express.js
-
-### Database
-
 - PostgreSQL
-
-### Authentication
-
-- JWT
+- pg
 - bcrypt
+- JSON Web Token (JWT)
+- dotenv
 
----
+## Architecture
 
-## Project Structure
+The backend follows a layered structure:
 
-```
+Route → Controller → Service → Repository → PostgreSQL
+
+This keeps business logic in services, SQL queries in repositories, and request/response handling in controllers.
+
+## Folder Structure
+
+```text
 TeamBreadAndJam-Odoo/
-
-│
-├── frontend/
-│
 ├── backend/
+│   ├── app.js
+│   ├── server.js
 │   ├── controllers/
 │   ├── services/
 │   ├── repositories/
 │   ├── routes/
 │   ├── middleware/
 │   ├── config/
-│   └── server.js
-│
+│   └── package.json
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── hooks/
+│   │   ├── layouts/
+│   │   ├── pages/
+│   │   ├── routes/
+│   │   ├── services/
+│   │   └── utils/
+│   ├── package.json
+│   └── vite.config.js
 ├── database/
 │   ├── schema.sql
 │   └── seed.sql
-│
 ├── docs/
-│
 └── README.md
 ```
 
----
+## Database Design
 
-## Database Modules
+The application uses PostgreSQL and includes tables for:
 
-- Roles
-- Departments
-- Employees
-- Asset Categories
-- Assets
-- Asset Allocations
-- Bookings
-- Maintenance
-- Audits
-- Notifications
+- roles
+- departments
+- employees
+- asset_categories
+- assets
+- asset_allocations
+- asset_transfers
+- bookings
+- maintenance_requests
+- audit_cycles
+- audit_records
+- notifications
+- activity_logs
 
----
+## Frontend Details
 
-## REST APIs
+The frontend is built with React and Vite and includes:
+
+- A responsive dashboard for overview metrics and actions
+- Reusable UI components such as cards, tables, badges, buttons, and loaders
+- Page-based routing for modules including assets, allocations, bookings, maintenance, audits, notifications, reports, settings, and profile
+- Service modules for communicating with the backend API
+- Protected navigation flow for authenticated users
+
+Default frontend development server:
+- http://localhost:5173
+
+## Backend Details
+
+The backend exposes REST APIs under the `/api` path and uses JWT-based authentication. The API follows a consistent response format:
+
+Success:
+```json
+{
+  "success": true,
+  "data": {}
+}
+```
+
+Failure:
+```json
+{
+  "success": false,
+  "message": "Error message"
+}
+```
+
+## API Overview
 
 ### Authentication
-
-```
-POST /api/auth/login
-```
+- `POST /api/auth/login`
 
 ### Departments
-
-```
-GET
-POST
-PUT
-DELETE
-```
+- `GET /api/departments`
+- `GET /api/departments/:id`
+- `POST /api/departments`
+- `PUT /api/departments/:id`
+- `DELETE /api/departments/:id`
 
 ### Employees
-
-```
-GET
-POST
-PUT
-DELETE
-```
+- `GET /api/employees`
+- `GET /api/employees/:id`
+- `POST /api/employees`
+- `PUT /api/employees/:id`
+- `DELETE /api/employees/:id`
 
 ### Asset Categories
-
-```
-GET
-POST
-PUT
-DELETE
-```
+- `GET /api/asset-categories`
+- `GET /api/asset-categories/:id`
+- `POST /api/asset-categories`
+- `PUT /api/asset-categories/:id`
+- `DELETE /api/asset-categories/:id`
 
 ### Assets
+- `GET /api/assets`
+- `GET /api/assets/:id`
+- `POST /api/assets`
+- `PUT /api/assets/:id`
+- `DELETE /api/assets/:id`
 
-```
-GET
-POST
-PUT
-DELETE
-```
-
-### Asset Allocations
-
-```
-GET
-POST
-PUT (Return Asset)
-```
+### Allocations
+- `GET /api/allocations`
+- `GET /api/allocations/:id`
+- `POST /api/allocations`
+- `POST /api/allocations/allocate`
+- `POST /api/allocations/return`
+- `POST /api/allocations/transfer`
+- `PUT /api/allocations/:id`
+- `DELETE /api/allocations/:id`
 
 ### Bookings
-
-```
-GET
-POST
-PUT
-DELETE
-```
+- `GET /api/bookings`
+- `GET /api/bookings/calendar`
+- `GET /api/bookings/:id`
+- `POST /api/bookings`
+- `PUT /api/bookings/:id`
+- `DELETE /api/bookings/:id`
 
 ### Maintenance
-
-```
-GET
-POST
-PUT
-DELETE
-```
+- `GET /api/maintenance`
+- `GET /api/maintenance/history`
+- `GET /api/maintenance/:id`
+- `POST /api/maintenance`
+- `PUT /api/maintenance/:id`
+- `DELETE /api/maintenance/:id`
 
 ### Audits
-
-```
-GET
-POST
-PUT
-DELETE
-```
+- `GET /api/audits`
+- `GET /api/audits/:id`
+- `POST /api/audits`
+- `POST /api/audits/verify`
+- `PUT /api/audits/:id`
+- `PUT /api/audits/:id/close`
+- `DELETE /api/audits/:id`
 
 ### Notifications
-
-```
-GET
-POST
-PUT
-DELETE
-```
-
----
+- `GET /api/notifications`
+- `GET /api/notifications/:id`
+- `POST /api/notifications`
+- `PUT /api/notifications/:id/read`
+- `DELETE /api/notifications/:id`
 
 ## Installation
 
-### Clone Repository
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/hannah5320/-TeamBreadAndJam-Odoo.git
+cd -TeamBreadAndJam-Odoo
 ```
 
-### Backend
+### 2. Set up PostgreSQL
+
+Create a PostgreSQL database named `assetflow` and run the SQL files in the database folder:
+
+```bash
+psql -U postgres -d assetflow -f database/schema.sql
+psql -U postgres -d assetflow -f database/seed.sql
+```
+
+### 3. Configure environment variables
+
+Create a `.env` file inside the backend folder with the following values:
+
+```env
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=assetflow
+DB_USER=postgres
+DB_PASSWORD=your_password
+PORT=5000
+JWT_SECRET=your_secret_key
+```
+
+### 4. Start the backend
 
 ```bash
 cd backend
@@ -254,7 +267,9 @@ npm install
 npm run dev
 ```
 
-### Frontend
+The backend will run on `http://localhost:5000`.
+
+### 5. Start the frontend
 
 ```bash
 cd frontend
@@ -262,61 +277,29 @@ npm install
 npm run dev
 ```
 
-### PostgreSQL
-
-Create a database named:
-
-```
-assetflow
-```
-
-Execute:
-
-- schema.sql
-- seed.sql
-
-Configure the `.env` file.
-
----
+The frontend will run on `http://localhost:5173`.
 
 ## Security
 
-- JWT Authentication
-- bcrypt Password Hashing
-- Parameterized SQL Queries
-- Input Validation
-- Role-Based Access Ready
-
----
+- JWT authentication
+- bcrypt password hashing
+- Parameterized SQL queries
+- Input validation in services and controllers
+- Role-based access structure ready for extension
 
 ## Team
 
-### Hannah Daniel
-- Backend Development
-- PostgreSQL Database
-- REST APIs
-- Authentication
-- Asset Management Logic
-
-### Hrishita
-- Frontend Development
-- UI/UX
-- Dashboard
-- React Components
-- API Integration
-
----
+- Hannah Daniel – Backend development, database design, API development
+- Hrishita – Frontend development, UI/UX, dashboard and page implementation
 
 ## Future Enhancements
 
-- QR Code Asset Tracking
-- Email Notifications
-- Advanced Analytics
-- File Uploads
-- Mobile Support
-
----
+- QR code asset tracking
+- Email notifications
+- Advanced analytics and reporting dashboards
+- File upload support
+- Mobile-friendly improvements
 
 ## License
 
-Developed for **Odoo Hackathon 2026**.
+Developed for the Odoo Hackathon 2026.
